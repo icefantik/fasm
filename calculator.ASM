@@ -21,7 +21,7 @@ section '.data' data readable writable
         infinity db 'infinity', 0
         point db ',', 0
 
-        opNotDefined db 'operation not defined'
+        opNotDefined db 'operation not defined', 0
 
         ;definet double
         A dd ?
