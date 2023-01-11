@@ -4,17 +4,15 @@ include 'win32a.inc'
 
 entry start
 
-;Даны длины ребер a, b, c прямоуголього параллепипеда. Найти его объём V = a * b * c и площадь поверхности S = 2 * (a * b + b * c + a * c).
-
 section '.data' readable writable
 
         strEnterA db 'Enter A: ', 0
         strEnterB db 'Enter B: ', 0
         strEnterC db 'Enter C: ', 0
 
-        res db 'S = %d', 0
-
         scanInt db '%d', 0
+
+        res db 'res = %d', 0
 
         A dd ?
         B dd ?
@@ -44,41 +42,31 @@ section '.code' readable executable
                 push scanInt
                 call [scanf]
 
-                ;a * b
-                mov eax, [A]
-                mul [B]
-                mov ebx, eax
-
-                ;b * c
-                mov eax, [B]
-                mul [C]
-                mov ecx, eax
-
-                ;a * c
-                mov eax, [A]
-                mul [C]
-
-                ;a * b + b * c
-                add ebx, ecx
-
-                ;a * b + b * c + a * c
-                add eax, ebx
-
-                ;2 * (a * b + b * c + a * c)
-                mov ebx, 2
-                mul ebx
-
-                push eax
-                push res
-                call [printf]
+                cmp A, B
+                jg elMore
+                elMore:
+                        cmp A, C
+                        jg moreA
+                        push C
+                        push res
+                        call [printf]
+                        jmp finish
 
                 jmp finish
+
+        moreA:
+                push A
+                push res
+                call [printf]
+                jmp finish
+
+        max:
+
 
         finish:
                 call [getch]
                 push NULL
                 call [ExitProcess]
-
 
 section '.idata' import data readable
 
